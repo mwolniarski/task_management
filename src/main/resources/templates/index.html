@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <title>Task Management - tasks</title>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-light bg-light">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active">Main page</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a th:href="@{/tasks}" class="nav-link">Tasks</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/users}" class="nav-link">Users</a>
+            </li>
+        </ul>
+    </nav>
+    <h1>Task management</h1>
+</div>
+</div>
+</body>
+</html>
