@@ -1,5 +1,7 @@
 package pl.wolniarskim.task_management.logic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.wolniarskim.task_management.model.Task;
 import pl.wolniarskim.task_management.model.User;
@@ -13,6 +15,7 @@ import java.util.Optional;
 @Service
 public class TaskService {
 
+    Logger logger = LoggerFactory.getLogger("test");
     TaskRepository repository;
 
     public TaskService(TaskRepository repository) {
