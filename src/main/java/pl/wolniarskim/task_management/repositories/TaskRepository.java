@@ -13,4 +13,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             value = "SELECT * FROM Task t WHERE UPPER(t.title) LIKE %?1%",
             nativeQuery = true)
     List<Task> getTaskByPartOfTitle(String partOfTitleToUpper);
+
+    
 }

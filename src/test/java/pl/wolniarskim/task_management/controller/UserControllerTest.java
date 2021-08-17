@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -31,7 +34,7 @@ class UserControllerTest {
     @Test
     void httpGetShouldReturnProperUserWhenIsPresent() throws Exception {
         //given
-        long id = repository.save(new User("Roman","Polana","test@wp.pl")).getId();
+        long id = repository.save(new User("Roman","Polana","test@wp.pl",passwordEncoder().encode("test123"))).getId();
 
         //when + then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/getUsers/" + id))
@@ -48,7 +51,7 @@ class UserControllerTest {
     @Test
     void httpPostShouldReturnCreated() throws Exception {
         //given
-        User user = new User("Roman","Polana","test@wp.pl");
+        User user = new User("Roman","Polana","test@wp.pl",passwordEncoder().encode("test123"));
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
@@ -61,7 +64,7 @@ class UserControllerTest {
     @Test
     void httpDeleteShouldDeleteGivenUserById() throws Exception {
         //given
-        long id = repository.save(new User("Roman","Polana","test@wp.pl")).getId();
+        long id = repository.save(new User("Roman","Polana","test@wp.pl",passwordEncoder().encode("test123"))).getId();
 
         //when + then
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/deleteUser/" + id))
@@ -78,7 +81,7 @@ class UserControllerTest {
     @Test
     void httpPutShouldUpdateAllPropertiesWithoutId() throws Exception {
         //given
-        User user = new User("Roman","Polana","test@wp.pl");
+        User user = new User("Roman","Polana","test@wp.pl",passwordEncoder().encode("test123"));
         long id = repository.save(user).getId();
         user.setId(700);
         ObjectMapper mapper = new ObjectMapper();
@@ -90,5 +93,10 @@ class UserControllerTest {
         //then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/getUsers/" + id))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }

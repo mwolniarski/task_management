@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             value = "SELECT * FROM User u WHERE UPPER(CONCAT(u.first_name,' ',u.last_name)) LIKE %?1%",
             nativeQuery = true)
     List<User> getUserByPartOfName(String partOfName);
+
+    User findByEmail(String email);
 }

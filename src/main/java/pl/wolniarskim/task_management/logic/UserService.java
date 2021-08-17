@@ -3,7 +3,13 @@ package pl.wolniarskim.task_management.logic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.wolniarskim.task_management.model.Task;
 import pl.wolniarskim.task_management.model.User;
@@ -12,7 +18,7 @@ import pl.wolniarskim.task_management.repositories.UserRepository;
 import java.util.*;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     Logger logger= LoggerFactory.getLogger("UserService");
 
@@ -66,9 +72,19 @@ public class UserService {
         return users;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return repository.findByEmail(s);
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
     private void initUsers(){
-        repository.save(new User("Michal","Kapusta","michal@wp.pl"));
-        repository.save(new User("Roman","Pomidor","pomidor@wp.pl"));
-        repository.save(new User("Arkadiusz","Gruszka","gruszka@wp.pl"));
+        repository.save(new User("Michal","Kapusta","michal@wp.pl",passwordEncoder().encode("test123")));
+        repository.save(new User("Roman","Pomidor","pomidor@wp.pl",passwordEncoder().encode("test123")));
+        repository.save(new User("Arkadiusz","Gruszka","gruszka@wp.pl",passwordEncoder().encode("test123")));
     }
 }
